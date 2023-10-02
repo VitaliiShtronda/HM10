@@ -1,11 +1,7 @@
 package org.example.File;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class TaskThree {
     public static void main(String[] args) {
@@ -15,33 +11,37 @@ public class TaskThree {
 
         Map<String, Integer> wordFreq = new HashMap<>();
 
-        try (Scanner scanner = new Scanner( new FileReader(file))){
-            while (scanner.hasNext()){
-                String wordFromText = scanner.next();
-                int value;
-                if (wordFreq.get(wordFromText) == null){
-                    value = 1;
-                } else{
-                    value = wordFreq.get(wordFromText) + 1;
+        Map<String, Integer> wordFrequency = new HashMap<>();
 
-                }
-                wordFreq.put(wordFromText, value);
-            }
-        }
-        catch (FileNotFoundException e){
-            System.out.println("e.getMessage() = " + e.getMessage());
-        }
-        while (!wordFreq.isEmpty()){
-            String maxKey= null;
-            for (String key: wordFreq.keySet()){
-                if (maxKey == null || wordFreq.get(key) > wordFreq.get(maxKey)){
-                    maxKey = key;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                String[] words = line.split("\\s+");
+                for (String word : words) {
+
+                    word = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
+                    if (!word.isEmpty()) {
+
+                        wordFrequency.put(word, wordFrequency.getOrDefault(word, 0) + 1);
+                    }
                 }
             }
-            System.out.println("wordFreq.get(maxKey) = " + wordFreq.get(maxKey));
-            wordFreq.remove(maxKey);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+
+        List<Map.Entry<String, Integer>> sortedWordFrequency = new ArrayList<>(wordFrequency.entrySet());
+        sortedWordFrequency.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+
+        for (Map.Entry<String, Integer> entry : sortedWordFrequency) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
     }
-
 }
+
+
+
+

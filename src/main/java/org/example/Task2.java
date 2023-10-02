@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -22,7 +23,7 @@ public class Task2 {
         file.createNewFile();
 
 
-        LinkedList<User> users = new LinkedList<>();
+        List<User> users = new LinkedList<>();
 
 
         try (Scanner scanner = new Scanner(new FileReader(file))) {
@@ -53,7 +54,7 @@ public class Task2 {
 }
 
 
-class User {
+  class User {
     private String name;
     private int age;
 
